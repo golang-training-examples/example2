@@ -33,3 +33,19 @@ archives:
 checksum:
   name_template: "{{ .ProjectName }}_checksums.txt"
   algorithm: sha256
+
+brews:
+  - name: example2
+    tap:
+      owner: ondrejsikademo
+      name: homebrew-tap
+    skip_upload: auto
+    homepage: https://github.com/golang-training-examples/example2
+    url_template: "https://github.com/golang-training-examples/example2/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    folder: Formula
+    caveats: "How to use this binary: https://github.com/golang-training-examples/example2"
+    description: "Example for Golang Training"
+    install: |
+      bin.install "example2"
+    test: |
+      system "#{bin}/example2"
