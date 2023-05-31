@@ -49,3 +49,11 @@ brews:
       bin.install "example2"
     test: |
       system "#{bin}/example2"
+
+scoop:
+  bucket:
+    owner: ondrejsikademo
+    name: scoop-bucket
+  homepage:  https://github.com/golang-training-examples/example2
+  description: "Example for Golang Training"
+  license: MIT
