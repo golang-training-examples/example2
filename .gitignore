@@ -1,0 +1,10 @@
+# Global
+.DS_Store
+
+# Editor
+.vscode
+
+# Go
+/example2
+/example2.exe
+/dist
