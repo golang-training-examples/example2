@@ -1,3 +1,4 @@
+// Package server provides a simple HTTP server
 package server
 
 import (
@@ -9,12 +10,19 @@ import (
 	"time"
 )
 
+// StatusResponse is a response for /status endpoint
 type StatusResponse struct {
-	Hostname         string `json:"hostname"`
-	StartedTimestamp int64  `json:"started_timestamp"`
-	Uptime           int64  `json:"uptime"`
+	// Hostname is a hostname of the server
+	Hostname string `json:"hostname"`
+
+	// StartedTimestamp is a timestamp when server was started
+	StartedTimestamp int64 `json:"started_timestamp"`
+
+	// Uptime is a number of seconds since server was started
+	Uptime int64 `json:"uptime"`
 }
 
+// Server starts HTTP server
 func Server() {
 	HOSTNAME, err := os.Hostname()
 	if err != nil {
