@@ -1,0 +1,4 @@
+github.com/ondrejsika/go-hello v0.1.0 h1:m70E4g4Z1TMDyLkgaRwQEpBGNLD4vMrFVDUwmaaHehA=
+github.com/ondrejsika/go-hello v0.1.0/go.mod h1:fKMeUsomz4PJc1HVTrZ85Gc0fDueHScfCwS7GzbDS1s=
+gitlab.sikalabs.com/go/hello-from-gitlab v0.2.0 h1:ALF2Q4aXjWS7oEVQtiOTMTN5b7GeLlbKTOtdMHs8VlE=
+gitlab.sikalabs.com/go/hello-from-gitlab v0.2.0/go.mod h1:kBL/pNoiXIhj9j3hS3aXkKDh7OniLAieZLzXPFx3c9Q=
