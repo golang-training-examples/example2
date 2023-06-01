@@ -8,3 +8,6 @@
 /example2
 /example2.exe
 /dist
+
+# Config
+/config.yaml
