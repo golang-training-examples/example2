@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/labstack/echo-contrib/echoprometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 )
@@ -33,6 +34,9 @@ func Server(port int) {
 	e.Logger = l
 	e.HideBanner = true
 	e.HidePort = true
+
+	e.Use(echoprometheus.NewMiddleware("example2"))
+	e.GET("/metrics", echoprometheus.NewHandler())
 
 	HOSTNAME, err := os.Hostname()
 	if err != nil {
