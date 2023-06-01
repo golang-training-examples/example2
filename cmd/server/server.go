@@ -8,13 +8,14 @@ import (
 )
 
 var FlagPort int
+var FlagPostgresDSN string
 
 var Cmd = &cobra.Command{
 	Use:     "server",
 	Short:   "Run HTTP server",
 	Aliases: []string{"s"},
 	Run: func(c *cobra.Command, args []string) {
-		server.Server(FlagPort)
+		server.Server(FlagPort, FlagPostgresDSN)
 	},
 }
 
@@ -31,5 +32,16 @@ func init() {
 	)
 	if port == 0 {
 		Cmd.MarkFlagRequired("port")
+	}
+
+	postgresDSN := viper_utils.GetString("SERVER.POSTGRES_DSN")
+	Cmd.Flags().StringVar(
+		&FlagPostgresDSN,
+		"postgres-dsn",
+		postgresDSN,
+		"Postgres DSN (connection string)",
+	)
+	if postgresDSN == "" {
+		Cmd.MarkFlagRequired("postgres-dsn")
 	}
 }

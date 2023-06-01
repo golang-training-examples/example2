@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/golang-training-examples/example2/internal/pets"
 	"github.com/labstack/echo-contrib/echoprometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
@@ -25,7 +26,10 @@ type StatusResponse struct {
 }
 
 // Server starts HTTP server
-func Server(port int) {
+func Server(port int, dsn string) {
+	db, _ := pets.NewDB(dsn)
+	db.Migrate()
+
 	l := log.New("echo")
 	l.DisableColor()
 	l.SetLevel(log.INFO)
@@ -46,6 +50,18 @@ func Server(port int) {
 
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<center><h1>Hello World!</h1></center>\n")
+	})
+
+	e.GET("/pets", func(c echo.Context) error {
+		pets := db.ListPets()
+		return c.JSON(http.StatusOK, pets)
+	})
+
+	e.POST("/pets", func(c echo.Context) error {
+		pet := pets.Pet{}
+		c.Bind(&pet)
+		db.CreatePet(pet.Name, pet.Age, pet.Kind)
+		return c.JSON(http.StatusCreated, pet)
 	})
 
 	e.GET("/livez", func(c echo.Context) error {
