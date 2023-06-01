@@ -21,8 +21,12 @@ var Cmd = &cobra.Command{
 func init() {
 	root.Cmd.AddCommand(Cmd)
 
-	viper.BindEnv("PORT")
-	port := viper.GetInt("PORT")
+	viper.BindEnv("SERVER_PORT")
+	port := viper.GetInt("SERVER.PORT")
+	portEnv := viper.GetInt("SERVER_PORT")
+	if portEnv != 0 {
+		port = portEnv
+	}
 
 	Cmd.Flags().IntVarP(
 		&FlagPort,
