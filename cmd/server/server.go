@@ -11,7 +11,7 @@ var Cmd = &cobra.Command{
 	Short:   "Run HTTP server",
 	Aliases: []string{"s"},
 	Run: func(c *cobra.Command, args []string) {
-		server.Server()
+		server.Server(8000)
 	},
 }
 
