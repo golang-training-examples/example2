@@ -2,12 +2,13 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 )
 
 // StatusResponse is a response for /status endpoint
@@ -24,31 +25,37 @@ type StatusResponse struct {
 
 // Server starts HTTP server
 func Server(port int) {
+	l := log.New("echo")
+	l.DisableColor()
+	l.SetLevel(log.INFO)
+
+	e := echo.New()
+	e.Logger = l
+	e.HideBanner = true
+	e.HidePort = true
+
 	HOSTNAME, err := os.Hostname()
 	if err != nil {
 		log.Fatal(err)
 	}
 	STARTED := time.Now().Unix()
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		fmt.Fprintf(w, "<center><h1>Hello world!</h1></center>")
+	e.GET("/", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, "<center><h1>Hello World!</h1></center>\n")
 	})
 
-	http.HandleFunc("/livez", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "ok")
+	e.GET("/livez", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK\n")
 	})
 
-	http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
-		data, _ := json.Marshal(StatusResponse{
+	e.GET("/status", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, StatusResponse{
 			Hostname:         HOSTNAME,
 			StartedTimestamp: STARTED,
 			Uptime:           time.Now().Unix() - STARTED,
 		})
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(data)
 	})
 
-	fmt.Printf("Listen on 0.0.0.0:%d, see: http://127.0.0.1:%d\n", port, port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	e.Logger.Infof("Listen on 0.0.0.0:%d, see http://127.0.0.1:%d", port, port)
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", port)))
 }
