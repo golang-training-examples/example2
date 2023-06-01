@@ -9,8 +9,8 @@ import (
 	"github.com/golang-training-examples/example2/pkg/server"
 )
 
-func Status() (*server.StatusResponse, error) {
-	resp, err := resty.New().R().Get("http://127.0.0.1:8000/status")
+func Status(origin string) (*server.StatusResponse, error) {
+	resp, err := resty.New().R().Get(origin + "/status")
 	if err != nil {
 		return nil, err
 	}
@@ -28,8 +28,8 @@ func Status() (*server.StatusResponse, error) {
 	return &data, nil
 }
 
-func PrintStatusOrDie() {
-	status, err := Status()
+func PrintStatusOrDie(origin string) {
+	status, err := Status(origin)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,8 +44,8 @@ Uptime:   %d
 	)
 }
 
-func PrintStatusJsonOrDie() {
-	status, err := Status()
+func PrintStatusJsonOrDie(origin string) {
+	status, err := Status(origin)
 	if err != nil {
 		log.Fatal(err)
 	}

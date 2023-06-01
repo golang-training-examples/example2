@@ -14,9 +14,9 @@ var Cmd = &cobra.Command{
 	Aliases: []string{"st"},
 	Run: func(c *cobra.Command, args []string) {
 		if FlagJSON {
-			status.PrintStatusJsonOrDie()
+			status.PrintStatusJsonOrDie("http://127.0.0.1:8000")
 		} else {
-			status.PrintStatusOrDie()
+			status.PrintStatusOrDie("http://127.0.0.1:8000")
 		}
 	},
 }
