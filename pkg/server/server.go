@@ -2,12 +2,14 @@
 package server
 
 import (
+	"bytes"
 	"embed"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"text/template"
 	"time"
 
 	"github.com/golang-training-examples/example2/internal/pets"
@@ -66,6 +68,20 @@ func Server(port int, dsn string) {
 		defer f.Close()
 		data, _ := ioutil.ReadAll(f)
 		return c.HTML(http.StatusOK, string(data))
+	})
+
+	e.GET("/pets-html", func(c echo.Context) error {
+		sub, _ := fs.Sub(htmlFS, "html")
+		f, _ := sub.Open("pets.html")
+		defer f.Close()
+		data, _ := ioutil.ReadAll(f)
+		tmpl, _ := template.New("pets.html").Parse(string(data))
+		var buf bytes.Buffer
+		p := db.ListPets()
+		tmpl.Execute(&buf, map[string][]pets.Pet{
+			"pets": p,
+		})
+		return c.HTML(http.StatusOK, buf.String())
 	})
 
 	e.GET("/pets", func(c echo.Context) error {
