@@ -4,9 +4,11 @@ import (
 	"github.com/golang-training-examples/example2/cmd/root"
 	"github.com/golang-training-examples/example2/pkg/status"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var FlagJSON bool
+var FlagOrigin string
 
 var Cmd = &cobra.Command{
 	Use:     "status",
@@ -14,9 +16,9 @@ var Cmd = &cobra.Command{
 	Aliases: []string{"st"},
 	Run: func(c *cobra.Command, args []string) {
 		if FlagJSON {
-			status.PrintStatusJsonOrDie("http://127.0.0.1:8000")
+			status.PrintStatusJsonOrDie(FlagOrigin)
 		} else {
-			status.PrintStatusOrDie("http://127.0.0.1:8000")
+			status.PrintStatusOrDie(FlagOrigin)
 		}
 	},
 }
@@ -29,4 +31,21 @@ func init() {
 		false,
 		"Show output in JSON",
 	)
+
+	viper.BindEnv("CLIENT_ORIGIN")
+	origin := viper.GetString("CLIENT.ORIGIN")
+	originEnv := viper.GetString("CLIENT_ORIGIN")
+	if originEnv != "" {
+		origin = originEnv
+	}
+
+	Cmd.Flags().StringVar(
+		&FlagOrigin,
+		"origin",
+		origin,
+		"Connect to server on origin",
+	)
+	if origin == "" {
+		Cmd.MarkFlagRequired("origin")
+	}
 }
