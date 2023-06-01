@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=v0.7.0 && \
+VERSION=v0.10.0 && \
 OS=linux && \
 ARCH=amd64 && \
 OWNER=golang-training-examples && \
