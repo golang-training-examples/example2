@@ -2,9 +2,9 @@ package status
 
 import (
 	"github.com/golang-training-examples/example2/cmd/root"
+	"github.com/golang-training-examples/example2/internal/viper_utils"
 	"github.com/golang-training-examples/example2/pkg/status"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var FlagJSON bool
@@ -32,12 +32,7 @@ func init() {
 		"Show output in JSON",
 	)
 
-	viper.BindEnv("CLIENT_ORIGIN")
-	origin := viper.GetString("CLIENT.ORIGIN")
-	originEnv := viper.GetString("CLIENT_ORIGIN")
-	if originEnv != "" {
-		origin = originEnv
-	}
+	origin := viper_utils.GetString("CLIENT.ORIGIN")
 
 	Cmd.Flags().StringVar(
 		&FlagOrigin,

@@ -2,9 +2,9 @@ package server
 
 import (
 	"github.com/golang-training-examples/example2/cmd/root"
+	"github.com/golang-training-examples/example2/internal/viper_utils"
 	"github.com/golang-training-examples/example2/pkg/server"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var FlagPort int
@@ -21,13 +21,7 @@ var Cmd = &cobra.Command{
 func init() {
 	root.Cmd.AddCommand(Cmd)
 
-	viper.BindEnv("SERVER_PORT")
-	port := viper.GetInt("SERVER.PORT")
-	portEnv := viper.GetInt("SERVER_PORT")
-	if portEnv != 0 {
-		port = portEnv
-	}
-
+	port := viper_utils.GetInt("SERVER.PORT")
 	Cmd.Flags().IntVarP(
 		&FlagPort,
 		"port",
