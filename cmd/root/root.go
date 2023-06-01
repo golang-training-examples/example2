@@ -1,12 +1,14 @@
 package root
 
 import (
+	"github.com/golang-training-examples/example2/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var Cmd = &cobra.Command{
-	Use: "example2",
+	Use:   "example2",
+	Short: "example2, " + version.Version,
 }
 
 func init() {

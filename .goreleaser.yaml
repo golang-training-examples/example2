@@ -19,6 +19,9 @@ builds:
     ldflags:
       - -s
       - -w
+      - -X github.com/golang-training-examples/example2/version.Version=v{{.Version}}
+      - -X github.com/golang-training-examples/example2/version.GitCommit={{.FullCommit}}
+      - -X github.com/golang-training-examples/example2/version.DateOfBuild={{.Date}}
 
 snapshot:
   name_template: "{{ incminor .Version }}-dev-{{.ShortCommit}}-{{.Timestamp}}"
