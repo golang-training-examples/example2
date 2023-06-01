@@ -31,7 +31,8 @@ func Server(port int) {
 	STARTED := time.Now().Unix()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello world!")
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		fmt.Fprintf(w, "<center><h1>Hello world!</h1></center>")
 	})
 
 	http.HandleFunc("/livez", func(w http.ResponseWriter, r *http.Request) {
