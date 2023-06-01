@@ -2,7 +2,10 @@
 package server
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -24,6 +27,9 @@ type StatusResponse struct {
 	// Uptime is a number of seconds since server was started
 	Uptime int64 `json:"uptime"`
 }
+
+//go:embed html/*
+var htmlFS embed.FS
 
 // Server starts HTTP server
 func Server(port int, dsn string) {
@@ -50,6 +56,16 @@ func Server(port int, dsn string) {
 
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<center><h1>Hello World!</h1></center>\n")
+	})
+
+	e.GET("/html", func(c echo.Context) error {
+		sub, _ := fs.Sub(htmlFS, "html")
+		f, _ := sub.Open("index.html")
+		// or
+		// f, _ := htmlFS.Open("html/index.html")
+		defer f.Close()
+		data, _ := ioutil.ReadAll(f)
+		return c.HTML(http.StatusOK, string(data))
 	})
 
 	e.GET("/pets", func(c echo.Context) error {
